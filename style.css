@@ -1,96 +1,267 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+* {
+  box-sizing: border-box;
+}
 
-  <title>Discrete Mathematics Notes</title>
+:root {
+  --sidebar-width: 300px;
+  --sidebar-collapsed-width: 76px;
+  --sidebar-bg: #111827;
+  --sidebar-hover: #1f2937;
+  --primary: #2563eb;
+  --page-bg: #f3f4f6;
+  --text-light: #e5e7eb;
+  --muted: #cbd5e1;
+}
 
-  <link rel="stylesheet" href="style.css" />
+body {
+  margin: 0;
+  display: flex;
+  height: 100vh;
+  font-family: Arial, "Microsoft YaHei", sans-serif;
+  background: var(--page-bg);
+}
 
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css"
-  />
+/* Sidebar */
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+.sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  height: 100vh;
+  padding: 20px 18px;
+  background: var(--sidebar-bg);
+  color: #ffffff;
+  overflow-y: auto;
+  transition: width 0.25s ease, min-width 0.25s ease, padding 0.25s ease;
+}
 
-  <script>
-    window.MathJax = {
-      tex: {
-        inlineMath: [["$", "$"], ["\\(", "\\)"]],
-        displayMath: [["$$", "$$"], ["\\[", "\\]"]]
-      },
-      svg: {
-        fontCache: "global"
-      }
-    };
-  </script>
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+  min-width: var(--sidebar-collapsed-width);
+  padding: 20px 12px;
+  overflow-x: hidden;
+}
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
-    async>
-  </script>
-</head>
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
 
-<body>
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <button class="site-title" id="homeBtn">
-        OneOcean
-      </button>
+.site-title {
+  border: none;
+  background: transparent;
+  color: white;
+  padding: 0;
+  font-size: 28px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+}
 
-      <button class="collapse-btn" id="collapseBtn" title="收折侧边栏">
-        ☰
-      </button>
-    </div>
+.site-title:hover {
+  color: #93c5fd;
+}
 
-    <p class="course-title">Discrete Mathematics</p>
+.collapse-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  background: #1f2937;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+}
 
-    <input
-      id="search"
-      type="text"
-      placeholder="搜索笔记..."
-    />
+.collapse-btn:hover {
+  background: #374151;
+}
 
-    <nav id="noteList"></nav>
-  </aside>
+.course-title {
+  margin: 14px 0 24px;
+  font-size: 18px;
+  color: var(--muted);
+}
 
-  <button class="mobile-menu-btn" id="mobileMenuBtn">
-    ☰
-  </button>
+#search {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 18px;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+}
 
-  <main class="content" id="content">
-    <article id="viewer" class="markdown-body">
-      <h1>OneOcean Notes</h1>
-      <p>欢迎来到你的课程笔记网站。</p>
+.note-item {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--text-light);
+  background: transparent;
+  border: 1px solid transparent;
+  text-align: left;
+  font-size: 15px;
+}
 
-      <h2>Discrete Mathematics</h2>
-      <p>请从左侧选择 Markdown 或 PDF 笔记进行查看。</p>
+.note-item:hover {
+  background: var(--sidebar-hover);
+}
 
-      <p>支持：</p>
-      <ul>
-        <li>Markdown 在线阅读</li>
-        <li>PDF 在线预览</li>
-        <li>数学公式渲染</li>
-        <li>笔记搜索</li>
-        <li>侧边栏收折</li>
-      </ul>
+.note-item.active {
+  background: var(--primary);
+  color: white;
+}
 
-      <p>公式示例：</p>
+.note-type {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.15);
+}
 
-      <p>
-        $P \rightarrow Q$
-      </p>
+.empty {
+  color: var(--muted);
+  padding: 20px 0;
+}
 
-      <p>
-        $$
-        (P \vee Q) \vee R = P \vee (Q \vee R)
-        $$
-      </p>
-    </article>
-  </main>
+/* Collapsed sidebar */
 
-  <script src="script.js"></script>
-</body>
-</html>
+.sidebar.collapsed .site-title,
+.sidebar.collapsed .course-title,
+.sidebar.collapsed #search,
+.sidebar.collapsed #noteList {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-header {
+  justify-content: center;
+}
+
+.sidebar.collapsed .collapse-btn {
+  width: 42px;
+  height: 42px;
+}
+
+/* Content */
+
+.content {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 36px;
+  transition: padding 0.25s ease;
+}
+
+#viewer {
+  max-width: 960px;
+  min-height: calc(100vh - 72px);
+  margin: 0 auto;
+  padding: 42px;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+#viewer img {
+  max-width: 100%;
+}
+
+.pdf-frame {
+  width: 100%;
+  height: 78vh;
+  border: none;
+  border-radius: 12px;
+}
+
+.error {
+  color: #dc2626;
+}
+
+code {
+  word-break: break-word;
+}
+
+/* Mobile menu */
+
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  z-index: 1001;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: var(--sidebar-bg);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  body {
+    height: auto;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 280px;
+    min-width: 280px;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar.collapsed {
+    width: 280px;
+    min-width: 280px;
+    padding: 20px 18px;
+  }
+
+  .sidebar.collapsed .site-title,
+  .sidebar.collapsed .course-title,
+  .sidebar.collapsed #search,
+  .sidebar.collapsed #noteList {
+    display: block;
+  }
+
+  .sidebar.collapsed .sidebar-header {
+    justify-content: space-between;
+  }
+
+  .content {
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    padding: 78px 18px 18px;
+  }
+
+  #viewer {
+    padding: 24px;
+    min-height: 70vh;
+  }
+
+  .pdf-frame {
+    height: 70vh;
+  }
+}
