@@ -4,23 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>My Website</title>
+  <title>Discrete Mathematics Notes</title>
 
   <link rel="stylesheet" href="style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css"
+  />
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
+  <aside class="sidebar">
+    <h1>OneOcean</h1>
+    <h2>Discrete Mathematics</h2>
 
-  <header class="hero">
-    <h1>欢迎来到我的网站</h1>
+    <input
+      id="search"
+      type="text"
+      placeholder="搜索笔记..."
+    />
 
-    <p>
-      GitHub + Vercel + HTML 搭建
-    </p>
+    <nav id="noteList"></nav>
+  </aside>
 
-    <button id="btn">
-      点击我
-    </button>
-  </header>
+  <main class="content">
+    <article id="viewer" class="markdown-body">
+      <h1>Discrete Mathematics</h1>
+      <p>请选择左侧的 Markdown 或 PDF 笔记进行查看。</p>
+    </article>
+  </main>
 
   <script src="script.js"></script>
 </body>
